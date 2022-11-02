@@ -1,6 +1,6 @@
-## Blog-Backend-REST-API-NestJS-Prisma 
+## REST-API-NestJS-Prisma 
 
-A simple backend REST API for a blog built using NestJS, Prisma, PostgreSQL and Swagger. 
+A simple backend REST built using NestJS, Prisma, PostgreSQL and Swagger. 
 
 ### Installation
 
