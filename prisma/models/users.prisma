@@ -1,0 +1,23 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          Int     @id @default(autoincrement())
+  cognitoId   String  @db.VarChar(256) @unique @map("cognito_id")
+  email       String  @db.VarChar(256) @unique
+  name        String  @db.VarChar(64)
+  companyId   Int     @map("company_id")
+  role        String  @db.VarChar(10)
+  virgilId    String  @db.VarChar(64) @map("virgil_id")
+  videos      Video[]
+  isAdmin     Boolean @default(false) @map("is_admin")
+  @@map("users")
+}
+
+model Video {
+  id          Int     @id
+  creator     User    @relation(fields: [userId], references: [id])
+  userId      Int     @map("user_id")
+}

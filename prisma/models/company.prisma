@@ -1,0 +1,32 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Company {
+  id              Int     @id @default(autoincrement())
+  name            String  @db.VarChar(64) @unique
+  canonicalName   String  @db.VarChar(64) @unique @map("canonical_name")
+  owners          User[]
+  ownerId         Int?    @map("owner_id")
+  aesKey          Json    @map("aes_key")
+  virgilId        String  @db.VarChar(64) @map("virgil_id")
+  policies        Json
+  reportTemplate  Json    @map("report_template")
+  groups          Group[]
+  consultancy     Boolean @default(false)
+
+  @@map("companies")
+}
+
+model User {
+  id              Int         @id
+  company         Company?    @relation(fields: [companyId], references: [id])
+  companyId       Int?        @map("company_id")
+}
+
+model Group {
+  id              Int     @id
+  company         Company @relation(fields: [companyId], references: [id])
+  companyId       Int
+}

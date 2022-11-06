@@ -1,0 +1,18 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Video {
+  id        Int     @id @default(autoincrement())
+  vId       String  @db.VarChar(128) @unique  @map("v_id")
+  creator   User    @relation(fields: [userId], references: [id])
+  userId    Int     @map("user_id")
+  data      Json
+  @@map("videos")
+}
+
+model User {
+  id        Int     @id
+  videos    Video[]
+}

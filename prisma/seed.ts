@@ -29,7 +29,82 @@ async function main() {
     },
   });
 
-  console.log({ post1, post2 });
+  const company = await prisma.company.upsert({
+    where: { name: 'Test Company' },
+    update: {},
+    create: {
+      name: 'Test Company',
+      canonicalName: 'Test canonical Company',
+      virgilId: 'ASD#@rwaf33@QEWDf344',
+      aesKey: {},
+      policies: {},
+      reportTemplate: {},
+    },
+  });
+
+  const user = await prisma.user.upsert({
+    where: { email: 'example@example.com' },
+    update: {},
+    create: {
+      cognitoId: 'ASDIGQYUG@IEui21u2rgb1fiasyf',
+      email: 'example@example.com',
+      name: 'example',
+      companyId: company.id,
+      role: 'example',
+      virgilId: 'ASD#@rwaf33@QEWDf344',
+      isAdmin: false,
+    },
+  });
+
+  const group1 = await prisma.group.upsert({
+    where: { id: 1 },
+    update: {},
+    create: {
+      name: 'Test Group',
+      companyId: company.id,
+      reportTemplate: {},
+    },
+  });
+
+  const userGroup1 = await prisma.userGroup.upsert({
+    where: { id: 1 },
+    update: {},
+    create: {
+      groupId: group1.id,
+      userId: user.id,
+    },
+  });
+
+  const group2 = await prisma.group.upsert({
+    where: { id: 2 },
+    update: {},
+    create: {
+      name: 'Test Group 2',
+      companyId: company.id,
+      reportTemplate: {},
+    },
+  });
+
+  const userGroup2 = await prisma.userGroup.upsert({
+    where: { id: 2 },
+    update: {},
+    create: {
+      groupId: group2.id,
+      userId: user.id,
+    },
+  });
+
+  const video = await prisma.video.upsert({
+    where: { vId: 'TESTvID' },
+    update: {},
+    create: {
+      vId: 'TESTvID',
+      userId: user.id,
+      data: {},
+    },
+  });
+
+  console.log({ post1, post2, company, user, video, userGroup1, userGroup2 });
 }
 
 // execute the main function

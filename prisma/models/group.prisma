@@ -1,0 +1,26 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Group {
+  id              Int         @id @default(autoincrement())
+  name            String      @db.VarChar(256)
+  company         Company     @relation(fields: [companyId], references: [id])
+  companyId       Int         @map("company_id")
+  reportTemplate  Json        @map("report_template")
+  users           UserGroup[]
+
+  @@map("groups")
+}
+
+model UserGroup {
+  id              Int     @id @default(autoincrement())
+  group           Group   @relation(fields: [groupId], references: [id])
+  groupId         Int 
+}
+
+model Company {
+  id              Int     @id
+  groups          Group[]
+}
