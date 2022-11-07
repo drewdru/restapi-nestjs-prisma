@@ -32,6 +32,6 @@ export class GroupsService {
         ) ORDER BY groups.name ASC
       ) as groupdata
     `;
-    return result.length ? result[0] : { groups: [] };
+    return result?.[0]?.groups ? result?.[0] : { groups: [] };
   }
 }
