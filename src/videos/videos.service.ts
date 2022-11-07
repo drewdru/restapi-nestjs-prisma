@@ -5,7 +5,11 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class VideosService {
   constructor(private prisma: PrismaService) {}
 
-  async findUserGroupAccessibleVideos(userGroupId: number, companyId: number) {
+  async findUserGroupAccessibleVideos(
+    userGroupId: number,
+    companyId: number,
+    userIsAdmin = false,
+  ) {
     return await this.prisma.video.findMany({
       where: {
         AND: [
@@ -14,12 +18,14 @@ export class VideosService {
           },
           {
             OR: [
-              { creator: { isAdmin: true } },
-              {
-                creator: {
-                  groups: { some: { groupId: { equals: userGroupId } } },
-                },
-              },
+              // { creator: { isAdmin: true } },
+              userIsAdmin
+                ? {}
+                : {
+                    creator: {
+                      groups: { some: { groupId: { equals: userGroupId } } },
+                    },
+                  },
             ],
           },
         ],

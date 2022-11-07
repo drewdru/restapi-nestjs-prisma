@@ -1,4 +1,4 @@
-import { User } from '../../users/entities/types';
+import { User } from 'src/users/types/types';
 
 export type Video = {
   id: number;

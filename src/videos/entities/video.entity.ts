@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { User } from '../../users/entities/types';
+import { User } from 'src/users/types/types';
 import { Video } from './types';
 
 export class VideoEntity implements Video {

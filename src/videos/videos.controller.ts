@@ -1,8 +1,8 @@
-import { Controller, Get, Query, ParseIntPipe } from '@nestjs/common';
+import { Controller, Get, Query } from '@nestjs/common';
 import { VideosService } from './videos.service';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { VideoEntity } from './entities/video.entity';
-
+import { GetUserGroupAccessibleVideos } from './dto/userGroupAccessibleVideos';
 @Controller('videos')
 @ApiTags('videos')
 export class VideosController {
@@ -14,13 +14,13 @@ export class VideosController {
     type: VideoEntity,
     isArray: true,
   })
-  getUserGroupAccessibleVideos(
-    @Query('user_group_id', ParseIntPipe) userGroupId: number,
-    @Query('company_id', ParseIntPipe) companyId: number,
+  async getUserGroupAccessibleVideos(
+    @Query() query: GetUserGroupAccessibleVideos,
   ) {
-    return this.videosService.findUserGroupAccessibleVideos(
-      userGroupId,
-      companyId,
+    return await this.videosService.findUserGroupAccessibleVideos(
+      query.userGroupId,
+      query.companyId,
+      query.userIsAdmin,
     );
   }
 }
