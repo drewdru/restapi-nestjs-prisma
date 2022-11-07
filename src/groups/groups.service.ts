@@ -1,21 +1,13 @@
 import { Injectable } from '@nestjs/common';
-import { stringify } from 'querystring';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { CompanyGroupOptionResult } from './entities/types';
 
 @Injectable()
 export class GroupsService {
   constructor(private prisma: PrismaService) {}
 
   async findCompanyGroupOptions(userGroupId: number, companyId: number) {
-    const result = await this.prisma.$queryRaw<
-      Array<{
-        groups: {
-          label: string;
-          value: number;
-          key: number;
-        };
-      }>
-    >`
+    const result = await this.prisma.$queryRaw<CompanyGroupOptionResult[]>`
       SELECT ARRAY_AGG(JSON_BUILD_OBJECT(
         'label', groupdata.label,
         'value', groupdata.value,
